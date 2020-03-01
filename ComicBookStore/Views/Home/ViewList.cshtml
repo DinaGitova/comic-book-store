@@ -1,0 +1,38 @@
+﻿@using ComicBookStore.Models
+@model IEnumerable<ComicModel>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>Cart</h2>
+
+<div class="row">
+    @{ int sum = 0; }
+    @if (Model != null)
+    {
+        foreach (ComicModel c in Model)
+        {
+            if (c.Price != 0)
+            {
+                if (c.isDiscounted) { sum += c.DiscountPrice; }
+                else { sum += c.Price; }
+                <div class="col-md-12 ">
+                    <br />
+                    <img src="@c.Img" />
+                    <span>@c.Title</span>
+                    <span>@c.Year</span>
+                    <span>
+                        <button>@Html.ActionLink("View More", "ComicDetails", "Home", new { id = c.Id }, new { @class = "btn" })</button>
+                    </span>
+                    <span>
+                        <button>@Html.ActionLink("Remove", "RemoveComic", "Home", new { id = c.Id, value = "cart" }, new { @class = "btn" })</button>
+                    </span>
+                </div>
+            }
+        }
+    }
+</div>
+
+<hr />
+<h5>Total Cost:  @sum</h5>
+

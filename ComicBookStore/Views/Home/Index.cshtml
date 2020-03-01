@@ -1,0 +1,122 @@
+﻿@using ComicBookStore.Models
+@model IEnumerable<ComicModel>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+
+<!--Carousel-->
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" data-ride="carousel">
+        @{int i = 0;}
+        @foreach (ComicModel c in Model)
+        {
+            if (c.inCarousel == true)
+            {
+                i++;
+                var active = i == 1 ? "active" : "";
+                <div class="carousel-item @active">
+                    <div style="width:100px; height:400px;"><img class="d-block carImg" src="@c.Img" alt="First slide"></div>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="text-danger">@c.Title</h5>
+
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+
+<!-- Discounted Comics Section -->
+
+<div class="container">
+    @{List<ComicModel> discounted = new List<ComicModel>(); }
+    @foreach (ComicModel c in Model)
+    {
+
+        if (c.isDiscounted == true) { discounted.Add(c); }
+    }
+    @if (discounted.Count >= 3)
+    {
+        <hr>
+        <h2> Discounted comics: </h2>
+        <div class="row">
+            @for (int j = 0; j < 3; j++)
+            {
+
+                <div class="card col-sm-4 ">
+                    <br />
+                    <img src="@discounted[j].Img" class="card-img-top block" />
+                    <div class="card-body">
+                        <h5 class="card-title">@discounted[j].Title</h5>
+                        <p class="card-text">@discounted[j].Desc</p>
+                        <br />
+                        <h2 class="card-text text-danger"><del>@discounted[j].Price MKD</del></h2>
+                        <h2 class="card-text">@discounted[j].DiscountPrice MKD</h2>
+                        <button>@Html.ActionLink("View More", "ComicDetails", "Home", new { id = discounted[j].Id }, new { @class = "btn" })</button>
+                    </div>
+                    <div class="card-footer">
+                        <button>@Html.ActionLink("Add To Cart", "AddToList", "Home", new { id = discounted[j].Id, value = "cart" }, new { @class = "btn" })</button>
+                        <button>@Html.ActionLink("Add To Favourites", "AddToList", "Home", new { id = discounted[j].Id, value = "fav" }, new { @class = "btn" })</button>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+</div>
+<hr />
+
+
+
+<!-- Random Suggested Comics Section -->
+<h2>You might be interested:</h2>
+<div class="row">
+    @{ Random r = new Random(); List<ComicModel> sugg = Model.ToList<ComicModel>();}
+        @for (int j = 0; j < 3; j++)
+        {
+            int rInt = r.Next(0, sugg.Count);
+
+                    <div class="card col-sm-4 ">
+                    <br />
+                    <img src="@sugg[rInt].Img" class="card-img-top block" />
+                    <div class="card-body">
+                        <h5 class="card-title">@sugg[rInt].Title</h5>
+                        <p class="card-text">@sugg[rInt].Desc</p>
+                        <br />
+                        @if (sugg[rInt].isDiscounted == true)
+                        {
+                            <h2 class="card-text text-danger"><del>@sugg[rInt].Price MKD</del></h2>
+                            <h2 class="card-text">@sugg[rInt].DiscountPrice MKD</h2>
+                        }
+                        else
+                        { <h2 class="card-text">@sugg[rInt].Price MKD</h2>}
+                        <button>@Html.ActionLink("View More", "ComicDetails", "Home", new { id = sugg[rInt].Id }, new { @class = "btn" })</button>
+                    </div>
+                    <div class="card-footer">
+                        <button>@Html.ActionLink("Add To Cart", "AddToList", "Home", new { id = sugg[rInt].Id, value = "cart" }, new { @class = "btn" })</button>
+                        <button>@Html.ActionLink("Add To Favourites", "AddToList", "Home", new { id = sugg[rInt].Id, value = "fav" }, new { @class = "btn" })</button>
+                    </div>
+                </div>
+
+        }
+ </div>
+
+

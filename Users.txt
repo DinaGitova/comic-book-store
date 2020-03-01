@@ -1,0 +1,7 @@
+User:
+user@user.com
+User1!
+
+Admin:
+admin@admin.com
+Admin1!

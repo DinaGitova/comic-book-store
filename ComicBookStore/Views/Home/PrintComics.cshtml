@@ -1,0 +1,35 @@
+﻿@using ComicBookStore.Models
+@model IEnumerable<ComicModel>
+
+@{
+    ViewBag.Title = "PrintComics";
+}
+
+<h2>Comics:</h2>
+
+<div class="row">
+
+    @foreach (ComicModel c in Model)
+    {
+        <div class="card border-dark m-0 col-sm-4 ">
+            <br />
+            <img src="@c.Img" class="card-img-top block" />
+            <div class="card-body">
+                <h5 class="card-title">@c.Title</h5>
+                <p class="card-text text">@c.Desc</p>
+                @if (c.isDiscounted == true)
+                {
+                    <h2 class="card-text text-danger"><del>@c.Price MKD</del></h2>
+                    <h2 class="card-text">@c.DiscountPrice MKD</h2>
+                }
+                else
+                { <h2 class="card-text">@c.Price MKD</h2>}
+                <button>@Html.ActionLink("View More", "ComicDetails", "Home", new { id = c.Id }, new { @class = "btn" })</button>
+            </div>
+            <div class="card-footer">
+                <button>@Html.ActionLink("Add To Cart", "AddToList", "Home", new { id = c.Id, value = "cart" }, new { @class = "btn" })</button>
+                <button>@Html.ActionLink("Add To Favourites", "AddToList", "Home", new { id = c.Id, value = "fav" }, new { @class = "btn" })</button>
+            </div>
+        </div>
+    }
+</div>

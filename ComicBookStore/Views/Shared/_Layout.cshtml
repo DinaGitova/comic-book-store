@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comic Book Store</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <link href="//db.onlinewebfonts.com/c/61e13817d1cc1fcfc870b062e2d09646?family=CCBiffBamBoom" rel="stylesheet" type="text/css" />
+
+    <style>
+        body {
+            background-image: url(../../Content/img/background.jpg);
+            background-size: 800px;
+        }
+        img:not(.carImg){
+            width:200px; 
+            height:auto; 
+            margin: 0 auto;
+        }      
+
+        h1, h2, h5 {
+            font-family: ccbiffbamboom, sans-serif;
+            font-style: normal;
+            font-weight: 400;
+        }
+
+        .title {
+            text-align:center; 
+            white-space: nowrap; 
+            color: black; 
+            text-shadow: -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF;
+        }
+    </style>
+
+</head>
+<body>
+    <div>
+        <div >
+            <h1 class="title"> COMIC BOOK STORE</h1>
+
+        </div>
+        <nav class="nav navbar navbar-expand-lg navbar-dark bg-dark">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="nav nav-pills navbar-nav mr-auto">
+                    <li class="nav-item">
+                        @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Print Editions", "PrintComics", "Home", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Digital Editions", "DigitalComics", "Home", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("View Cart", "ViewList", "Home", new { value = "cart" }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Favourites", "ViewList", "Home", new { value = "fav" }, new { @class = "nav-link" })
+                    </li>
+                     <li class="nav-item">
+                        @Html.ActionLink("Contact", "Contact", "Home", new { area = ""}, new { @class = "nav-link" })
+                    </li>
+                    @if(User.IsInRole("Admin")) {
+                    <li class="nav-item">
+                        @Html.ActionLink("Manage Comics", "ManageComics", "ComicModels", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                    }
+                </ul>
+                @using (Html.BeginForm("Search", "Home", FormMethod.Get, new { novalidate = "novalidate" }))
+                {
+                   <div class="nav-item form-inline my-2 my-lg-0">
+                        @Html.TextBox("search", null, new { @class = "form-control mr-sm-2" })
+                        <input type="submit" value="Search" class="btn btn-outline-secondary my-2 my-sm-0" />
+                    </div>
+                }
+                @Html.Partial("_LoginPartial")
+
+
+</div>
+        </nav>
+    </div>
+
+
+    <div class="container body-content" style="background-color:whitesmoke; width:inherit"> <br/>
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Dina Gitova - <a href="http://www.freepik.com"> Background image designed by macrovector / Freepik </a> - Data by Marvel.com</p>
+        </footer>
+    </div>
+
+  
+</body>
+</html>

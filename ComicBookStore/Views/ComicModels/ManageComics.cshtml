@@ -1,0 +1,104 @@
+﻿@model IEnumerable<ComicBookStore.Models.ComicModel>
+
+@{
+    ViewBag.Title = "Manage Comics";
+}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-colvis-1.6.1/b-html5-1.6.1/b-print-1.6.1/r-2.2.3/datatables.min.css" />
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/b-1.6.1/b-colvis-1.6.1/b-html5-1.6.1/b-print-1.6.1/r-2.2.3/datatables.min.js">
+</script>
+
+<h2>Manage Comics</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="w-100">
+    <table id="comicsTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Year)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Writer)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Desc)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Img)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Type)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.inCarousel)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.isDiscounted)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DiscountPrice)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Year)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Writer)
+                    </td>
+                    <td>
+                        <span class="d-inline-block text-truncate" style="max-width: 50px;"> @Html.DisplayFor(modelItem => item.Desc) </span>
+                    </td>
+                    <td>
+                        <img src="@Html.DisplayFor(modelItem => item.Img)" style="width:100px; height:auto; margin: 0 auto;" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.inCarousel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.isDiscounted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DiscountPrice)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) 
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) 
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }) 
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+    <script>
+            $(document).ready(function () {
+                var table = $("#comicsTable").DataTable();
+            });
+        </script>
+
+}

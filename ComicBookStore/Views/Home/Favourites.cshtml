@@ -1,0 +1,30 @@
+﻿@using ComicBookStore.Models
+@model IEnumerable<ComicModel>
+@{
+    ViewBag.Title = "Favourites";
+}
+
+<h2>Favourites</h2>
+
+<div class="row">
+    @if (Model != null)
+    {
+        foreach (ComicModel c in Model)
+        {
+            if (c.Price != 0)
+            {
+                <div class="col-md-12 ">
+                    <br />
+                    <img src="@c.Img" />
+                    <span>@c.Title</span>
+                    <span>@c.Year</span>
+                    <span>
+                        <button>@Html.ActionLink("View More", "ComicDetails", "Home", new { id = c.Id }, new { @class = "btn" })</button>
+                        <button>@Html.ActionLink("Add To Cart", "AddToList", "Home", new { id = c.Id, value = "cart" }, new { @class = "btn" })</button>
+                        <button>@Html.ActionLink("Remove", "RemoveComic", "Home", new { id = c.Id, value = "fav" }, new { @class = "btn" })</button>
+                    </span>
+                </div>
+            }
+        }
+    }
+</div>

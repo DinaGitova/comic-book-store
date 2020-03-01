@@ -1,0 +1,95 @@
+﻿@model ComicBookStore.Models.ComicModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Comic Details</h2>
+
+<div class="container">
+    <p>
+        <button>@Html.ActionLink("Add To Cart", "AddToList", "Home", new { id = Model.Id, value = "cart" }, new { @class = "btn" })</button>
+        <button>@Html.ActionLink("Add To Favourites", "AddToList", "Home", new { id = Model.Id, value = "fav" }, new { @class = "btn" })</button>
+    </p>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3"></dt>
+        <dd class="col-sm-9">
+            <img src="@Html.DisplayFor(model => model.Img)" style="width:400px" />
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd class="col-sm-9">
+            <h5> @Html.DisplayFor(model => model.Title) </h5>
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Writer)
+        </dt>
+
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Writer)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Desc)
+        </dt>
+
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Desc)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+
+
+
+
+        @if (Model.isDiscounted == true)
+        {
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+
+            <dd class="col-sm-9">
+                <del>@Html.DisplayFor(model => model.Price)</del>
+            </dd>
+
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.DiscountPrice)
+            </dt>
+
+            <dd class="col-sm-9">
+                <h5 class="text-danger">@Html.DisplayFor(model => model.DiscountPrice)</h5>
+            </dd>
+        }
+        else
+        {
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+
+            <dd class="col-sm-9">
+                <h5>@Html.DisplayFor(model => model.Price)</h5>
+            </dd>
+        }
+
+    </dl>
+    <button>@Html.ActionLink("<<Back", null, null, null, new { href = Request.UrlReferrer })</button>
+</div>
+
