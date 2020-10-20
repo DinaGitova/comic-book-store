@@ -61,7 +61,7 @@
             @for (int j = 0; j < 3; j++)
             {
 
-                <div class="card col-sm-4 ">
+                <div class="card border-dark col-sm-4 ">
                     <br />
                     <img src="@discounted[j].Img" class="card-img-top block" />
                     <div class="card-body">
@@ -87,36 +87,38 @@
 
 
 <!-- Random Suggested Comics Section -->
-<h2>You might be interested:</h2>
-<div class="row">
-    @{ Random r = new Random(); List<ComicModel> sugg = Model.ToList<ComicModel>();}
+<div class="container">
+    <h2>You might be interested:</h2>
+    <div class="row">
+        @{ Random r = new Random(); List<ComicModel> sugg = Model.ToList<ComicModel>();}
         @for (int j = 0; j < 3; j++)
         {
             int rInt = r.Next(0, sugg.Count);
 
-                    <div class="card col-sm-4 ">
+            <div class="card border-dark col-sm-4 ">
+                <br />
+                <img src="@sugg[rInt].Img" class="card-img-top block" />
+                <div class="card-body">
+                    <h5 class="card-title">@sugg[rInt].Title</h5>
+                    <p class="card-text">@sugg[rInt].Desc</p>
                     <br />
-                    <img src="@sugg[rInt].Img" class="card-img-top block" />
-                    <div class="card-body">
-                        <h5 class="card-title">@sugg[rInt].Title</h5>
-                        <p class="card-text">@sugg[rInt].Desc</p>
-                        <br />
-                        @if (sugg[rInt].isDiscounted == true)
-                        {
-                            <h2 class="card-text text-danger"><del>@sugg[rInt].Price MKD</del></h2>
-                            <h2 class="card-text">@sugg[rInt].DiscountPrice MKD</h2>
-                        }
-                        else
-                        { <h2 class="card-text">@sugg[rInt].Price MKD</h2>}
-                        <button>@Html.ActionLink("View More", "ComicDetails", "Home", new { id = sugg[rInt].Id }, new { @class = "btn" })</button>
-                    </div>
-                    <div class="card-footer">
-                        <button>@Html.ActionLink("Add To Cart", "AddToList", "Home", new { id = sugg[rInt].Id, value = "cart" }, new { @class = "btn" })</button>
-                        <button>@Html.ActionLink("Add To Favourites", "AddToList", "Home", new { id = sugg[rInt].Id, value = "fav" }, new { @class = "btn" })</button>
-                    </div>
+                    @if (sugg[rInt].isDiscounted == true)
+                    {
+                        <h2 class="card-text text-danger"><del>@sugg[rInt].Price MKD</del></h2>
+                        <h2 class="card-text">@sugg[rInt].DiscountPrice MKD</h2>
+                    }
+                    else
+                    { <h2 class="card-text">@sugg[rInt].Price MKD</h2>}
+                    <button>@Html.ActionLink("View More", "ComicDetails", "Home", new { id = sugg[rInt].Id }, new { @class = "btn" })</button>
                 </div>
+                <div class="card-footer">
+                    <button>@Html.ActionLink("Add To Cart", "AddToList", "Home", new { id = sugg[rInt].Id, value = "cart" }, new { @class = "btn" })</button>
+                    <button>@Html.ActionLink("Add To Favourites", "AddToList", "Home", new { id = sugg[rInt].Id, value = "fav" }, new { @class = "btn" })</button>
+                </div>
+            </div>
 
         }
- </div>
+    </div>
+</div>
 
 

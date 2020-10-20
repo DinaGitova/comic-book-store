@@ -7,12 +7,47 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    background-color: whitesmoke;
+    width: inherit
 }
 
+body {
+    background-color: #343a40;
+    padding: 0;
+}
+
+.content {
+    background-image: url(../../Content/img/background.jpg);
+    background-size: 800px;
+}
+
+img:not(.carImg) {
+    width: 200px;
+    height: auto;
+    margin: 0 auto;
+}
+
+h1, h2, h5 {
+    font-family: ccbiffbamboom, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    margin: 0;
+}
+
+.header {
+    padding: 2%;
+}
+
+.title {
+    text-align: left;
+    white-space: nowrap;
+    color: white;
+    text-shadow: -3px -3px 0 black, 3px -3px 0 black, -3px 3px 0 black, 3px 3px 0 black;
+}
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
-.dl-horizontal dt {
+    .dl-horizontal dt {
     white-space: normal;
 }
 
