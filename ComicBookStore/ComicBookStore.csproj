@@ -212,6 +212,10 @@
     <Compile Include="Migrations\202001262315081_updateComicModel.Designer.cs">
       <DependentUpon>202001262315081_updateComicModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010201749452_cart-migration.cs" />
+    <Compile Include="Migrations\202010201749452_cart-migration.Designer.cs">
+      <DependentUpon>202010201749452_cart-migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ComicModel.cs" />
@@ -435,6 +439,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001262315081_updateComicModel.resx">
       <DependentUpon>202001262315081_updateComicModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010201749452_cart-migration.resx">
+      <DependentUpon>202010201749452_cart-migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

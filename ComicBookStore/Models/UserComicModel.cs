@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -12,16 +13,20 @@ namespace ComicBookStore.Models
 
         [Key]
         public string UserId { get; set; }
-        public string FavouriteComics { get; set; }
-        public string Cart { get; set; }
+
+
+        [InverseProperty("Favourite")]
+        public virtual ICollection<ComicModel> FavouriteComics { get; set; }
+        [InverseProperty("Cart")]
+        public virtual ICollection<ComicModel> CartComics { get; set; }
 
         public UserComicModel() { }
 
-        public UserComicModel(string id, string fav, string cart)
+        public UserComicModel(string userId, ICollection<ComicModel> favouriteComics, ICollection<ComicModel> cart)
         {
-            UserId = id;
-            FavouriteComics = fav;
-            Cart = cart;
+            UserId = userId;
+            FavouriteComics = favouriteComics;
+            CartComics = cart;
         }
     }
 }

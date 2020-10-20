@@ -23,26 +23,27 @@ namespace ComicBookStore.Controllers
 
         public ActionResult Index()
         {
+
             comics = db.Comics.ToList();
             return View(comics);
         }
 
         public ActionResult PrintComics()
-        {        
+        {
             comics = db.Comics.Where(c => c.Type.Equals("Print")).ToList();
             return View(comics);
         }
 
         public ActionResult DigitalComics()
         {
-            
+
             comics = db.Comics.Where(c => c.Type.Equals("Digital")).ToList();
             return View("PrintComics", comics);
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "About";
 
             return View();
         }
@@ -65,36 +66,40 @@ namespace ComicBookStore.Controllers
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var model = db.UserComic.SingleOrDefault(u => u.UserId.Equals(user.Id));
+            ComicModel comic = db.Comics.SingleOrDefault(c => c.Id == id);
             if (value == "cart")
             {
                 if (model != null)
                 {
-                    if (!checkIfDuplicate(model.Cart, id.ToString()))
+                    if (!model.CartComics.Contains(comic))
                     {
-                        model.Cart += "," + id;
+                        model.CartComics.Add(comic);
                         db.SaveChanges();
                     }
                 }
                 else
                 {
-                    string ids = id.ToString() + ",";
-                    db.UserComic.Add(new UserComicModel(user.Id, "", ids));
+                    var cart = new LinkedList<ComicModel>();
+                    cart.AddFirst(comic);
+                    db.UserComic.Add(new UserComicModel(user.Id, new LinkedList<ComicModel>(), cart));
                     db.SaveChanges();
                 }
             }
-            else if(value == "fav")
+            else if (value == "fav")
             {
                 if (model != null)
                 {
-                    if (!checkIfDuplicate(model.FavouriteComics, id.ToString())) {
-                        model.FavouriteComics += "," + id;
+                    if (!model.FavouriteComics.Contains(comic))
+                    {
+                        model.FavouriteComics.Add(comic);
                         db.SaveChanges();
                     }
                 }
                 else
                 {
-                    string ids = id.ToString() + ",";
-                    db.UserComic.Add(new UserComicModel(user.Id, ids, ""));
+                    var fav = new LinkedList<ComicModel>();
+                    fav.AddFirst(comic);
+                    db.UserComic.Add(new UserComicModel(user.Id, fav, new LinkedList<ComicModel>()));
                     db.SaveChanges();
                 }
             }
@@ -105,13 +110,13 @@ namespace ComicBookStore.Controllers
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var model = db.UserComic.SingleOrDefault(u => u.UserId.Equals(user.Id));
-            string[] ids = null;
+
             if (model != null)
             {
-                if (value == "cart") { ids = model.Cart.Split(','); ViewBag.Type = "Cart: "; }
-                if (value == "fav") { ids = model.FavouriteComics.Split(','); ViewBag.Type = "Favourites: "; }
+                if (value == "cart") { comics = model.CartComics.ToList<ComicModel>(); ViewBag.Type = "Cart: "; }
+                if (value == "fav") { comics = model.FavouriteComics.ToList<ComicModel>(); ViewBag.Type = "Favourites: "; }
             }
-            comics = getComics(ids);
+
             if (value == "fav") return View("Favourites", comics);
             return View(comics);
         }
@@ -120,25 +125,22 @@ namespace ComicBookStore.Controllers
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var model = db.UserComic.SingleOrDefault(u => u.UserId.Equals(user.Id));
-            string ids = null; string newList = null;
+            var comic = db.Comics.SingleOrDefault(c => c.Id == id);
+
             if (model != null)
             {
                 if (value == "cart")
                 {
-                    ids = model.Cart;
-                    newList = remove(ids, id.ToString());
-                    model.Cart = newList;
+                    model.CartComics.Remove(comic);
                     db.SaveChanges();
-                    comics = getComics(newList.Split(','));
+                    comics = model.CartComics.ToList<ComicModel>();
                     return View("ViewList", comics);
                 }
                 if (value == "fav")
                 {
-                    ids = model.FavouriteComics;
-                    newList = remove(ids, id.ToString());
-                    model.FavouriteComics = newList;
+                    model.FavouriteComics.Remove(comic);
                     db.SaveChanges();
-                    comics = getComics(newList.Split(','));
+                    comics = model.FavouriteComics.ToList<ComicModel>();
                     return View("Favourites", comics);
                 }
             }
@@ -151,68 +153,6 @@ namespace ComicBookStore.Controllers
             return View(comic);
         }
 
-        public bool checkIfDuplicate(string ids, string id)
-        {
-            string[] comicsId = ids.Split(',');
-            if (comicsId != null)
-            {
-                foreach (string i in comicsId)
-                {
-                    if (i == id) { return true; }
-                }
-            }
-            return false;
-        }
-        public string remove(string ids, string id)
-        {
-            List<string> comicsId = ids.Split(',').ToList<string>();
-            bool removed = false;
-            if (comicsId != null)
-                {
-                    for (int i = 0; i < comicsId.Count(); i++)
-                    {
-                        if (comicsId[i] == id)
-                        {
-                            comicsId.RemoveAt(i);
-                             removed = true;
-                        }
-                    }
-                }
-            if(removed)
-            {
-                string newList = ",";
-                for (int i = 0; i < comicsId.Count(); i++)
-                {
-                    if (!comicsId[i].Equals(','))
-                    {
-                        newList += comicsId[i] + ",";
-                    }
-
-                }
-                return newList;
-            }
-            return ids;
-
-        }
-
-        public List<ComicModel> getComics(string[] ids)
-        {
-            if (ids != null)
-            {
-                foreach (string id in ids)
-                {
-                    if (id != "")
-                    {
-                        int i = Int32.Parse(id);
-                        var comic = db.Comics.SingleOrDefault(c => c.Id.Equals(i));
-                       if(comic != null) comics.Add(comic);
-                    }
-                }
-                return comics;
-            }
-            comics.Add(new ComicModel());
-            return comics;
-        }
 
         protected override void Dispose(bool disposing)
         {

@@ -18,5 +18,8 @@ namespace ComicBookStore.Models
         public bool inCarousel { get; set; }
         public bool isDiscounted { get; set; }
         public int DiscountPrice { get; set; }
+
+        public virtual ICollection<UserComicModel> Cart { get; set; }
+        public virtual ICollection<UserComicModel> Favourite { get; set; }
     }
 }
